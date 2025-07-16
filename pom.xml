@@ -38,10 +38,6 @@
 		<java.version>17</java.version>
 		<build.version>${project.version}</build.version>
 	</properties>
-
-	<build>
-		<finalName>detectumapi</finalName>
-	</build>
 	
 	<dependencies>
 	
@@ -94,6 +90,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>detectumapi</finalName>
 	</build>
 
 </project>
