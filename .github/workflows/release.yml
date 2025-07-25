@@ -42,14 +42,3 @@ jobs:
         run: |
           git tag -a "v${{ env.VERSION }}" -m "Lançamento da versão v${{ env.VERSION }}"
           git push origin "v${{ env.VERSION }}"
-
-      - name: Criar Pull Request para ${{ github.event.inputs.base_branch }}
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "feature: Lançamento da versão v${{ env.VERSION }}"
-          branch: ${{ github.ref_name }}
-          base: ${{ github.event.inputs.base_branch }}
-          title: "feature: Lançamento da versão v${{ env.VERSION }}"
-          body: |
-            Esta PR automatiza o lançamento da versão `v${{ env.VERSION }}` para `${{ github.event.inputs.base_branch }}`.
