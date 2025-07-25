@@ -33,8 +33,9 @@ public class Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println(this.api());
-		log.info(api());
+		if (log.isInfoEnabled()) {
+			log.info(api());
+		}
 	}
 
 }
