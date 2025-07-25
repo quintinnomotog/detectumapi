@@ -1,4 +1,4 @@
-name: Release Manual
+name: Lançamento de Nova Versão (Manual)
 
 on:
   workflow_dispatch:
@@ -13,32 +13,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup JDK 17
+      - name: JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Definir versão como variável de ambiente
+      - name: Definir versão
         run: echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
 
-      - name: Atualizar versão no pom.xml
+      - name: Atualizar POM.XML (versão)
         run: |
           mvn versions:set -DnewVersion=${{ env.VERSION }} -DgenerateBackupPoms=false
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -am "chore: Atualiza versão para ${{ env.VERSION }}" || echo "Nada para commitar"
+          git commit -am "build: Nova Versão ${{ env.VERSION }}" || echo "Nada para commitar"
           git push
 
       - name: Build do projeto
         run: mvn clean install -DskipTests
 
-      - name: Criar tag da versão
+      - name: Criar TAG
         run: |
-          git tag -a "v${{ env.VERSION }}" -m "Lançamento da versão v${{ env.VERSION }}"
+          git tag -a "v${{ env.VERSION }}" -m "Lançamento da Versão v${{ env.VERSION }}"
           git push origin "v${{ env.VERSION }}"
