@@ -1,0 +1,55 @@
+name: Release Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+      base_branch:
+        default: 'main'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Definir versão como variável de ambiente
+        run: echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+
+      - name: Atualizar versão no pom.xml
+        run: |
+          mvn versions:set -DnewVersion=${{ env.VERSION }} -DgenerateBackupPoms=false
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore: Atualiza versão para ${{ env.VERSION }}" || echo "Nada para commitar"
+          git push
+
+      - name: Build do projeto
+        run: mvn clean install -DskipTests
+
+      - name: Criar tag da versão
+        run: |
+          git tag -a "v${{ env.VERSION }}" -m "Lançamento da versão v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}"
+
+      - name: Criar Pull Request para ${{ github.event.inputs.base_branch }}
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feature: Lançamento da versão v${{ env.VERSION }}"
+          branch: ${{ github.ref_name }}
+          base: ${{ github.event.inputs.base_branch }}
+          title: "feature: Lançamento da versão v${{ env.VERSION }}"
+          body: |
+            Esta PR automatiza o lançamento da versão `v${{ env.VERSION }}` para `${{ github.event.inputs.base_branch }}`.
