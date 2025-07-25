@@ -4,10 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Nova versão (ex: 1.0.0.1)'
         required: true
       base_branch:
-        description: 'Branch base para PR (ex: main ou development)'
         default: 'main'
 
 jobs:
