@@ -13,7 +13,7 @@
 
 	<groupId>br.com.quintinno</groupId>
 	<artifactId>detectumapi</artifactId>
-	<version>1.0.0.1</version>
+	<version>v1.0.0.2</version>
 	<name>detectumapi</name>
 	<description>Serviço de descoberta de microsserviços da arquitetura distribuída</description>
 	
