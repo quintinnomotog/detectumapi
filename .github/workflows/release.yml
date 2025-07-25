@@ -32,7 +32,7 @@ jobs:
           mvn versions:set -DnewVersion=${{ env.VERSION }} -DgenerateBackupPoms=false
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -am "build: Nova Versão ${{ env.VERSION }}" || echo "Nada para commitar"
+          git commit -am "build: Lançamento da Nova Versão ${{ env.VERSION }}" || echo "Nada para commitar"
           git push
 
       - name: Build do projeto
@@ -40,5 +40,5 @@ jobs:
 
       - name: Criar TAG
         run: |
-          git tag -a "v${{ env.VERSION }}" -m "Lançamento da Versão v${{ env.VERSION }}"
+          git tag -a "v${{ env.VERSION }}" -m "build: Lançamento da Nova Versão v${{ env.VERSION }}"
           git push origin "v${{ env.VERSION }}"
